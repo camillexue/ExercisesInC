@@ -10,6 +10,14 @@ February 2018
 #include <stdlib.h>
 #include <string.h>
 
+/*
+collect_numbers: gets input from user and stores integers in array
+user inputs a number per line ends input with Ctrl-D.
+
+numbers: gets pointer to numbers array, stores the converted string input to int
+input: buffer for string input
+
+*/
 void collect_numbers(int* numbers) {
     int done = 0;
     char input[11];
@@ -23,6 +31,7 @@ void collect_numbers(int* numbers) {
             printf("Done collecting input.\n");
             done = 1;
         }
+        //if something other than a number is entered, return error message
         else if (atoi(input) == 0 && strcmp(input, "0\0") != 0) {
             printf("That's not a valid input.\n");
             done = 1;
@@ -38,6 +47,7 @@ void collect_numbers(int* numbers) {
             i++;
         }
     }
+    //if user enters less than 10 numbers, set rest to 0
     if (i < 10) {
         for(int x = i; x < 10; x++) {
             numbers[x] = 0;
@@ -45,9 +55,16 @@ void collect_numbers(int* numbers) {
     }
 }
 
-int sum(int* numbers) {
+/*
+sum: adds up the total of all the integers in an array, returns total
+
+numbers: integer array
+length: number of elements in the array
+total: total sum of elements
+*/
+int sum(int* numbers, int length) {
     int total = 0;
-    for(int i = 0; i < 10; i++) {
+    for(int i = 0; i < length; i++) {
         //printf("%d\n", numbers[i]);
         total = total + numbers[i];
     }
@@ -58,6 +75,6 @@ int sum(int* numbers) {
 int main() {
     int numbers[10];
     collect_numbers(numbers);
-    sum(numbers);
+    sum(numbers, 10);
     return 0;
 }

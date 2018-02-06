@@ -19,9 +19,10 @@ int *foo() {
     for (i=0; i<SIZE; i++) {
         array[i] = 42;
     }
-    return array; //warning: function returns address of local variable [-Wreturn-local-addr], Segmentation fault
-    //this is a bad idea because the stack gets cleared when function is done, stack frame is deallocated,
-    //address is now address of unallocated memory
+    return array; /*warning: function returns address of local variable
+    [-Wreturn-local-addr], Segmentation fault
+    this is a bad idea because the stack gets cleared when function is done, stack frame is deallocated,
+    address is now address of unallocated memory */
 
     /* when I run it, I get a segmentation fault which means that the program
     tried reading or writing to memory it's not allowed to, which makes sense because

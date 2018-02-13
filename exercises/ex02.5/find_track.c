@@ -38,7 +38,36 @@ void find_track(char search_for[])
 // Prints track number and title.
 void find_track_regex(char pattern[])
 {
-    // TODO: fill this in
+
+    regex_t k;
+    regmatch_t matches[20]; //match array, 20 is max match number
+
+    int status;
+    int i;
+
+    //checks if regular expression is valid
+    status = regcomp(&k,pattern,REG_EXTENDED);
+
+    if (status != 0) {
+        printf("Not a valid regular expression.");
+        exit(1);
+    }
+
+    else {
+        //searches through each track to find matches
+        for (i=0; i<NUM_TRACKS; i++) {
+            //compares one track title with reg expression
+            int match_status = regexec(&k, tracks[i], 20, matches,0);
+            //iff it finds it, it will print it.
+            if (match_status == 0) {
+                printf("Match in Track %i: '%s'\n", i, tracks[i]);
+            }
+
+            //if there's no match, it will say no match. it will move on
+        }
+
+    }
+    regfree(&k);
 }
 
 // Truncates the string at the first newline, if there is one.
@@ -59,8 +88,8 @@ int main (int argc, char *argv[])
     fgets(search_for, 80, stdin);
     rstrip(search_for);
 
-    find_track(search_for);
-    //find_track_regex(search_for);
+    //find_track(search_for);
+    find_track_regex(search_for);
 
     return 0;
 }

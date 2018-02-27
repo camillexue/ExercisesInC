@@ -2,16 +2,17 @@
 
 ### C Exercises
 
-Modify the link below so it points to the `ex02.5` directory in your
+Modify the link below so it points to the `ex03` directory in your
 student repository.
 
 [Here is a link to the ex02.5 directory in my repository](https://github.com/camillexue/ExercisesInC/tree/master/exercises/ex02.5)
 
-### Think OS Chapter 3 reading questions
+### Think OS Chapter 4 reading questions
 
-### Virtual memory
+**Files and file systems**
 
-1) The Georgian alphabet has 33 letters.  How many bit are needed to specify a letter?
+1) What abstractions do file systems provide?  Give an example of something that is logically
+true about files systems but not true of their implementations.
 
 Six bits are needed because it would allow you to store 64 different values. Five bits would only get you 32.
 
@@ -42,4 +43,4 @@ I would use a python dictionary to represent a sparse array.
 
 8) What is a context switch?
 
-It's a mechanism through whichan operating system can interrupt a running process, save its state, and run another process.
+It's a mechanism through which can operating system can interrupt a running process, save its state, and run another process.

@@ -3,7 +3,7 @@
 Copyright 2014 Allen Downey
 License: MIT License
 
-Based on an example from 
+Based on an example from
 https://raw.githubusercontent.com/twcamper/head-first-c/master/10/math-master.c
 
 Based on an example in Head First C.
@@ -20,15 +20,21 @@ Based on an example in Head First C.
 
 int score = 0;
 
+/* Set up a signal handler.
+
+   sig: signal number
+   handler: signal handler function
+*/
 int catch_signal(int sig, void (*handler) (int)) {
     struct sigaction action;
     action.sa_handler = handler;
-    //action.sa_flags = SA_RESTART;
     sigemptyset(&action.sa_mask);
     action.sa_flags = 0;
     return sigaction(sig, &action, NULL);
 }
 
+/* Signal handler: End the game.
+ */
 void end_game(int sig)
 {
     printf("\nFinal score: %i\n", score);
@@ -37,6 +43,8 @@ void end_game(int sig)
 
 int end_flag = 0;
 
+/* Signal handler: Notify the user and raise SIGINT.
+*/
 void times_up(int sig) {
     //puts("\nTIME'S UP!");
     //raise(SIGINT);
@@ -47,33 +55,38 @@ int main(void) {
     int a, b, answer;
     char txt[4];
 
-    //siginterrupt(SIGALRM, 0);
+    // when the alarm goes off, call times_up
     catch_signal(SIGALRM, times_up);
-    //catch_signal(SIGINT, end_game);
+
+    // if we get interrupted, end the game
+    catch_signal(SIGINT, end_game);
+
+    // seed the random number generator
     srandom((unsigned int) time(NULL));
 
     while(1) {
-	a = rand() % 11;
-	b = rand() % 11;
-	printf("\nWhat is %d times %d? ", a, b);
+        a = rand() % 11;
+        b = rand() % 11;
+        printf("\nWhat is %d times %d? ", a, b);
 
-	alarm(5);
+        alarm(5);
+	    while (1) {
+	        char *ret = fgets(txt, 4, stdin);
+	        if (ret) break;
+	    }
 
-	while (1) {
-	  char *ret = fgets(txt, 4, stdin);
-	  if (ret) break;
-	}
+        answer = atoi(txt);
+        if (answer == a * b) {
+            printf("\nRight!\n");
+            score++;
+        } else {
+            printf("\nWrong!\n");
+        }
+        printf("Score: %i\n", score);
 
-	answer = atoi(txt);
-	if (answer == a * b) {
-	    score++;
-	} else {
-	    printf("\nWrong! Score: %i\n", score);
-	}
-
-	if (end_flag) {
-	    end_game(0);
-	}
+	    if (end_flag) {
+	        end_game(0);
+	    }
     }
     return 0;
 }

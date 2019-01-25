@@ -8,6 +8,7 @@ License: GNU GPLv3
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
+#include "mutex.h"
 
 #define NUM_CHILDREN 5
 
@@ -34,6 +35,7 @@ void *check_malloc(int size)
 */
 typedef struct {
     int counter;
+    Mutex *mutex;
 } Shared;
 
 /* Allocate the shared structure.
@@ -42,6 +44,7 @@ Shared *make_shared()
 {
     Shared *shared = check_malloc(sizeof(Shared));
     shared->counter = 0;
+    shared->mutex = make_mutex();
     return shared;
 }
 
@@ -73,8 +76,10 @@ void join_thread(pthread_t thread)
 */
 void child_code(Shared *shared)
 {
+    mutex_lock(shared->mutex);
     printf("counter = %d\n", shared->counter);
     shared->counter++;
+    mutex_unlock(shared->mutex);
 }
 
 /* Entry point for the child threads.

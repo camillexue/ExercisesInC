@@ -4,6 +4,9 @@
     and more concise. It will automatically get rid of unecessary or unused
     variables or replace functions with simpler ones.
 */
+void name() {
+  printf("My name is Camille\n");
+}
 int main() {
     int x = 5;
     printf("Hello, World!\n"); //optimizes by changing printf to puts
@@ -11,6 +14,8 @@ int main() {
 
     int y = x + 1; //optimizes by doing math first and setting it equal to y
     printf("%d\n", y);
+
+    name();
 
     return 0;
 }

@@ -23,7 +23,7 @@ char *strfilter2(char *string, char *letters) {
     char *dest = buffer;
     char c;
 
-    while (c = *string++) {
+    while ((c = *string++)) {
         char *ptr = strchr(letters, c);
         if (ptr) {
             *dest++ = c;
@@ -37,7 +37,7 @@ char *strfilter2(char *string, char *letters) {
 
 char *strfilter3(char *string, char *letters) {
     int length = strlen(string);
-    char buffer[length];
+    char buffer[length+1];
     int j = 0;
 
     for (int i=0; i<length; i++) {
@@ -46,14 +46,15 @@ char *strfilter3(char *string, char *letters) {
             buffer[j++] = string[i];
         }
     }
-    return buffer;
+    buffer[j] = '\0';
+    return strdup(buffer);
 }
 
 char *strfilter4(char *string, char *letters) {
     char buffer[100];
     char c;
 
-    while (c = *string++) {
+    while ((c = *string++)) {
         char *ptr = strchr(letters, c);
         if (ptr) {
             strcat(buffer, c);

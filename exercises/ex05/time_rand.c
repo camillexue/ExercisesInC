@@ -59,21 +59,40 @@ main(int argc, char *argv[])
     int iters = 100000000;
     int seed = 17;
 
-    time = time_func(iters, dummy);
-    printf("%f ms \t dummy\n", time);
+    // time = time_func(iters, dummy);
+    // printf("%f ms \t dummy\n", time);
+    //
+    // time = time_func(iters, dummy2);
+    // printf("%f ms \t dummy2\n", time);
 
-    time = time_func(iters, dummy2);
-    printf("%f ms \t dummy2\n", time);
+    // time = time_func(iters, random_float);
+    // printf("%f ms \t random_float\n", time);
+    //
+    // time = time_func(iters, my_random_float);
+    // printf("%f ms \t my_random_float\n", time);
 
-    time = time_func(iters, random_float);
-    printf("%f ms \t random_float\n", time);
+    // time = time_func(iters, my_random_float2);
+    // printf("%f ms \t my_random_float2\n", time);
+    //
+    // time = time_func(iters, random_float);
+    // printf("%f ms \t random_float\n", time);
 
-    time = time_func(iters, my_random_float);
-    printf("%f ms \t my_random_float\n", time);
+    time = time_func(iters, random_double);
+    printf("%f ms \t random_double\n", time);
 
-    time = time_func(iters, my_random_float2);
-    printf("%f ms \t my_random_float2\n", time);
-
-    time = time_func(iters, random_float);
-    printf("%f ms \t random_float\n", time);
+    time = time_func(iters, my_random_double);
+    printf("%f ms \t my_random_double\n", time);
 }
+/*
+Time Test Results:
+226.259000 ms 	 dummy
+766.104000 ms 	 dummy2
+800.313000 ms 	 random_float
+816.546000 ms 	 my_random_float
+2096.786000 ms 	 my_random_float2
+829.600000 ms 	 random_float
+
+899.490000 ms 	 random_double
+2623.702000 ms 	 my_random_double
+
+*/

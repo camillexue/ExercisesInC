@@ -18,9 +18,9 @@ numbers: gets pointer to numbers array, stores the converted string input to int
 input: buffer for string input
 
 */
-void collect_numbers(int* numbers) {
+int collect_numbers(int* numbers) {
     int done = 0;
-    char input[11];
+    char input[11]; // buffer
     int i = 0; //index for numbers[i]
 
     printf("Enter 10 numbers each separated by lines. Ctrl-D to sum.\n");
@@ -30,16 +30,19 @@ void collect_numbers(int* numbers) {
         if (scanf("%10s", input) == EOF) {
             printf("Done collecting input.\n");
             done = 1;
+            return -1;
         }
         //if something other than a number is entered, return error message
         else if (atoi(input) == 0 && strcmp(input, "0\0") != 0) {
             printf("That's not a valid input.\n");
             done = 1;
+            return -2;
         }
         else if (i > 10) {
             printf("The input has exceeded the buffer size. ");
             printf("Ctrl-D to enter input.\n");
             done = 1;
+            return -3;
         }
         else {
             numbers[i] = atoi(input);
@@ -53,6 +56,7 @@ void collect_numbers(int* numbers) {
             numbers[x] = 0;
         }
     }
+    return 0;
 }
 
 /*
@@ -74,7 +78,7 @@ int sum(int* numbers, int length) {
 
 int main() {
     int numbers[10];
-    collect_numbers(numbers);
+    printf("status: %d\n", collect_numbers(numbers));
     sum(numbers, 10);
     return 0;
 }

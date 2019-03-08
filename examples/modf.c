@@ -33,6 +33,15 @@ returns: new array, caller must free
 */
 // TODO: Write this function
 
+double* get_int_part(double * array, int length){
+  double *newarray = malloc((sizeof(double) *length));
+
+  for(int i=0; i< length; i++) {
+    modf(array[i], newarray+i); //could do (array[i], &newarray[i]) same thing
+  }
+  return newarray;
+}
+
 void test_get_int_part()
 {
     double array[] = {1.2, 2.718, 3.1412, 5.6};
@@ -43,7 +52,7 @@ void test_get_int_part()
 
     for (int i=0; i<length; i++) {
         //printf("%lf\n", result[i]);
-        assert(int_part[i] == expected[i]);
+        assert(abs(int_part[i] - expected[i]) < 1e-8);
     }
 }
 
@@ -58,7 +67,18 @@ returns: new array, caller must free
 */
 //TODO: Write this function
 
+double * get_both_parts(double* array, int length, double** frac_part_ptr) {
+  int int_part[sizeof(double) * length] = get_int_part(array, length);
 
+  double *newarray = malloc((sizeof(double) *length));
+
+  for(int i=0; i< length; i++) {
+    frac_part = modf(array[i], newarray+i); //could do (array[i], &newarray[i]) same thing
+  }
+  return newarray;
+
+  return 0;
+}
 void test_get_both_parts()
 {
     double array[] = {1.2, 2.718, 3.14159, 5.6};
@@ -80,6 +100,6 @@ void test_get_both_parts()
 int main (int argc, char *argv[])
 {
     test_get_int_part();
-    test_get_both_parts();
+    //test_get_both_parts();
     printf("All tests passed\n");
 }

@@ -56,13 +56,14 @@ void print_list(Node **list) {
 int pop(Node **list) {
     int retval;
     Node *head = *list;
-
-    Node *next_node = head->next;
-    retval = head->val;
-    free(head);
-    *list = next_node;
-
-    return retval;
+    if(head != NULL) {
+      Node *next_node = head->next;
+      retval = head->val;
+      free(head);
+      *list = next_node;
+      return retval;
+    }
+    return -1;
 }
 
 

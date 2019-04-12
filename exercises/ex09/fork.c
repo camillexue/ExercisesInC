@@ -14,6 +14,7 @@ License: MIT License https://opensource.org/licenses/MIT
 #include <sys/types.h>
 #include <wait.h>
 
+int global = 5;
 
 // errno is an external global variable that contains
 // error information
@@ -32,8 +33,14 @@ double get_seconds() {
 
 void child_code(int i)
 {
+    int child_var;
+    void *c = malloc(128);
+
     sleep(i);
     printf("Hello from child %d.\n", i);
+    printf("Address of child_var is %p\n", &child_var);
+    printf("Address of c is %p\n", &c);
+    printf("Address of global is %p\n", &global);
 }
 
 // main takes two parameters: argc is the number of command-line
@@ -79,6 +86,11 @@ int main(int argc, char *argv[])
 
     /* parent continues */
     printf("Hello from the parent.\n");
+    int parent_var;
+    void *p = malloc(128);
+    printf("Address of parent_var is %p\n", &parent_var);
+    printf("Address of p is %p\n", &p);
+    printf("Address of global is %p\n", &global);
 
     for (i=0; i<num_children; i++) {
         pid = wait(&status);
@@ -99,3 +111,23 @@ int main(int argc, char *argv[])
 
     exit(0);
 }
+
+// Child and parent seem to share the same global, heap, and stack segments
+//
+// Creating child 0.
+// Hello from the parent.
+// Address of parent_var is 0x7ffd9f5a7c40 parent stack
+// Address of p is          0x7ffd9f5a7c50
+// Address of global is     0x56018c2a2010
+// Hello from child 0.
+// Address of child_var is  0x7ffd9f5a7bfc child stack
+// Address of c is          0x7ffd9f5a7c00
+// Address of global is     0x56018c2a2010
+// Child 30263 exited with error code 0.
+// Elapsed time = 0.000318 seconds.
+
+// child_var and parent_var should be on the stack and they have
+// addresses that are far apart so they do not share the same stack.
+// SHARED: p and c should be allocated on heap and they have close addresses.
+// They share the same global as well since the global variable they
+// reference is the same, same address

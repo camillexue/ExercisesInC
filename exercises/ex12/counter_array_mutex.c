@@ -41,13 +41,12 @@ Shared *make_shared(int end)
 
     shared->counter = 0;
     shared->end = end;
+    shared->mutex = make_mutex();
 
     shared->array = check_malloc(shared->end * sizeof(int));
     for (i=0; i<shared->end; i++) {
         shared->array[i] = 0;
     }
-
-    shared->mutex = make_mutex();
     return shared;
 }
 
@@ -73,7 +72,7 @@ void join_thread(pthread_t thread)
 
 void child_code(Shared *shared)
 {
-    printf("Starting child at counter %d\n", shared->counter);
+    // printf("Starting child at counter %d\n", shared->counter);
 
     while (1) {
         mutex_lock(shared->mutex);
@@ -86,7 +85,7 @@ void child_code(Shared *shared)
         shared->counter++;
 
         if (shared->counter % 10000 == 0) {
-            printf("%d\n", shared->counter);
+            // printf("%d\n", shared->counter);
         }
         mutex_unlock(shared->mutex);
     }
@@ -96,7 +95,7 @@ void *entry(void *arg)
 {
     Shared *shared = (Shared *) arg;
     child_code(shared);
-    printf("Child done.\n");
+    // printf("Child done.\n");
     pthread_exit(NULL);
 }
 
@@ -104,12 +103,12 @@ void check_array(Shared *shared)
 {
     int i, errors=0;
 
-    printf("Checking...\n");
+    // printf("Checking...\n");
 
     for (i=0; i<shared->end; i++) {
         if (shared->array[i] != 1) errors++;
     }
-    printf("%d errors.\n", errors);
+    // printf("%d errors.\n", errors);
 }
 
 int main()
@@ -130,3 +129,16 @@ int main()
     check_array(shared);
     return 0;
 }
+
+
+// Time results:
+
+// counter_array 
+// real	0m0.026s
+// user	0m0.027s
+// sys	0m0.011s
+//
+// counter_array_mutex
+// real	0m0.203s
+// user	0m0.168s
+// sys	0m0.227s
